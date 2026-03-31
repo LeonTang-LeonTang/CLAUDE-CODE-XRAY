@@ -61,8 +61,8 @@
   </text>
   
   <!-- Text: XRAY -->
-  <text x="120" y="85" fill="#667eea" font-size="24" font-weight="bold" font-family="system-ui, -apple-system, sans-serif" letter-spacing="8">
-    X-RAY
+  <text x="120" y="85" fill="#667eea" font-size="24" font-weight="bold" font-family="system-ui, -apple-system, sans-serif" letter-spacing="2">
+    Xray
   </text>
   
   <!-- Subtitle -->

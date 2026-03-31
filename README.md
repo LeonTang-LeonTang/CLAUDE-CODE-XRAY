@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/diagrams/logo.png" alt="Claude Code X-Ray Logo" width="450"/>
+  <img src="https://cdn.jsdelivr.net/gh/LeonTang-LeonTang/CLAUDE-CODE-XRAY@main/claude-code-xray/diagrams/logo.png" alt="Claude Code X-Ray Logo" width="450"/>
 </p>
 
 <p align="center">
