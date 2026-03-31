@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./diagrams/logo.svg" alt="Claude Code X-Ray Logo" width="450"/>
+  <img src="./diagrams/logo.png" alt="Claude Code X-Ray Logo" width="450"/>
 </p>
 
 <p align="center">

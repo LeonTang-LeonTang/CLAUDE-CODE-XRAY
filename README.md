@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./claude-code-xray/diagrams/logo.svg" alt="Claude Code X-Ray Logo" width="450"/>
+  <img src="https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/diagrams/logo.png" alt="Claude Code X-Ray Logo" width="450"/>
 </p>
 
 <p align="center">
@@ -354,30 +354,30 @@ The ultimate hands-on section. **Build a Claude Code-style system from scratch.*
 
 Looking for visual representations? Check out the **`[diagrams](./claude-code-xray/diagrams/)`** folder:
 
-### 📊 SVG Diagrams — View Directly in Markdown
+### 📊 Diagrams — View Directly in Markdown
 
-| Diagram                                                                | Description                        |
-| ---------------------------------------------------------------------- | ---------------------------------- |
-| [`architecture-overview.svg`](./claude-code-xray/diagrams/architecture-overview.svg)     | High-level 5-layer architecture    |
-| [`tool-execution-pipeline.svg`](./claude-code-xray/diagrams/tool-execution-pipeline.svg) | 4-step tool execution              |
-| [`flow-overview.svg`](./claude-code-xray/diagrams/flow-overview.svg)                     | 8-step request-response flow       |
-| [`startup-sequence.svg`](./claude-code-xray/diagrams/startup-sequence.svg)               | Startup with prefetch optimization |
+| Diagram | Description |
+| ------- | ----------- |
+| [architecture-overview.png](./claude-code-xray/diagrams/architecture-overview.png) | High-level 5-layer architecture |
+| [tool-execution-pipeline.png](./claude-code-xray/diagrams/tool-execution-pipeline.png) | 4-step tool execution |
+| [flow-overview.png](./claude-code-xray/diagrams/flow-overview.png) | 8-step request-response flow |
+| [startup-sequence.png](./claude-code-xray/diagrams/startup-sequence.png) | Startup with prefetch optimization |
 
 #### Architecture Overview
 
-![Architecture Mind Map](./claude-code-xray/diagrams/architecture-overview.svg)
+![Architecture Overview](https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/diagrams/architecture-overview.png)
 
 #### Tool Execution Pipeline
 
-![Tool Execution Pipeline](./claude-code-xray/diagrams/tool-execution-pipeline.svg)
+![Tool Execution Pipeline](https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/diagrams/tool-execution-pipeline.png)
 
 #### Flow Overview
 
-![Flow Mind Map](./claude-code-xray/diagrams/flow-overview.svg)
+![Flow Overview](https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/diagrams/flow-overview.png)
 
 #### Startup Sequence
 
-![Startup Sequence](./claude-code-xray/diagrams/startup-sequence.svg)
+![Startup Sequence](https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/diagrams/startup-sequence.png)
 
 ---
 
