@@ -13,12 +13,10 @@
 ## Watch the Video Tutorial
 
 <p align="center">
-
-[![Video Tutorial: Claude Code Xray - I Reverse Engineered Claude Code Here's How It Actually Works](https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/video-thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
-
-**[▶ Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)**
-
+  <img src="https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/video-thumbnail.png" alt="Claude Code Xray Video Thumbnail" width="600"/>
 </p>
+
+**▶ [Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)**
 
 > *"I Reverse Engineered Claude Code. Here's How It Actually Works."* — An 8–12 minute guided walkthrough of the entire repository, covering the 5-layer architecture, tool execution pipeline, hidden mechanics, and how to rebuild it yourself.
 
