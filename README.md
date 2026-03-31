@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./diagrams/logo.svg" alt="Claude Code X-Ray Logo" width="450"/>
+  <img src="./claude-code-xray/diagrams/logo.svg" alt="Claude Code X-Ray Logo" width="450"/>
 </p>
 
 <p align="center">
@@ -14,9 +14,9 @@
 
 <p align="center">
 
-[![Video Tutorial: Claude Code X-Ray - I Reverse Engineered Claude Code Here's How It Actually Works](./video-thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Video Tutorial: Claude Code X-Ray - I Reverse Engineered Claude Code Here's How It Actually Works](./claude-code-xray/video-thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
-**[▶ Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)** &nbsp;|&nbsp; **[📄 Video Script](./video-tutorial-script.md)**
+**[▶ Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)**
 
 </p>
 
@@ -169,14 +169,14 @@ const SleepTool = feature('PROACTIVE') || feature('KAIROS')
 
 | Section                                      | What You'll Find                                      | Difficulty   |
 | -------------------------------------------- | ----------------------------------------------------- | ------------ |
-| [01_overview](./01_overview/)                   | High-level system overview and architecture diagrams  | Beginner     |
-| [02_core_architecture](./02_core_architecture/) | Deep dive into each module and their dependencies     | Advanced     |
-| [03_execution_flow](./03_execution_flow/)       | Step-by-step tracing of request to response           | Intermediate |
-| [04_key_components](./04_key_components/)       | Detailed breakdown of API, Agent, Memory, Tool layers | Advanced     |
-| [05_code_walkthrough](./05_code_walkthrough/)   | Annotated walkthrough of critical files               | Intermediate |
-| [06_design_patterns](./06_design_patterns/)     | Design patterns and abstractions used                 | Advanced     |
-| [07_hidden_mechanics](./07_hidden_mechanics/)   | Non-obvious behaviors and edge cases                  | Expert       |
-| [08_rebuild_guide](./08_rebuild_guide/)         | How to rebuild key components                         | All Levels   |
+| [01_overview](./claude-code-xray/01_overview/)                   | High-level system overview and architecture diagrams  | Beginner     |
+| [02_core_architecture](./claude-code-xray/02_core_architecture/) | Deep dive into each module and their dependencies     | Advanced     |
+| [03_execution_flow](./claude-code-xray/03_execution_flow/)       | Step-by-step tracing of request to response           | Intermediate |
+| [04_key_components](./claude-code-xray/04_key_components/)       | Detailed breakdown of API, Agent, Memory, Tool layers | Advanced     |
+| [05_code_walkthrough](./claude-code-xray/05_code_walkthrough/)   | Annotated walkthrough of critical files               | Intermediate |
+| [06_design_patterns](./claude-code-xray/06_design_patterns/)     | Design patterns and abstractions used                 | Advanced     |
+| [07_hidden_mechanics](./claude-code-xray/07_hidden_mechanics/)   | Non-obvious behaviors and edge cases                  | Expert       |
+| [08_rebuild_guide](./claude-code-xray/08_rebuild_guide/)         | How to rebuild key components                         | All Levels   |
 
 ---
 
@@ -184,9 +184,9 @@ const SleepTool = feature('PROACTIVE') || feature('KAIROS')
 
 | If You're...                               | Start Here                                    | Then Read                                                                         |
 | ------------------------------------------ | --------------------------------------------- | --------------------------------------------------------------------------------- |
-| **New to Claude Code?**              | `01_overview/system_overview.md`            | `03_execution_flow/request_to_response_flow.md`                                 |
-| **Want to build something similar?** | `05_code_walkthrough/entry_point.md`        | `06_design_patterns/patterns_used.md` → `08_rebuild_guide/how_to_rebuild.md` |
-| **Deep dive?**                       | `02_core_architecture/modules_breakdown.md` | `07_hidden_mechanics/non_obvious_behaviors.md`                                  |
+| **New to Claude Code?**              | `claude-code-xray/01_overview/system_overview.md`            | `claude-code-xray/03_execution_flow/request_to_response_flow.md`                                 |
+| **Want to build something similar?** | `claude-code-xray/05_code_walkthrough/entry_point.md`        | `claude-code-xray/06_design_patterns/patterns_used.md` → `claude-code-xray/08_rebuild_guide/how_to_rebuild.md` |
+| **Deep dive?**                       | `claude-code-xray/02_core_architecture/modules_breakdown.md` | `claude-code-xray/07_hidden_mechanics/non_obvious_behaviors.md`                                  |
 
 ---
 
@@ -352,32 +352,32 @@ The ultimate hands-on section. **Build a Claude Code-style system from scratch.*
 
 ## Visual Diagrams
 
-Looking for visual representations? Check out the **[diagrams](./diagrams/)** folder:
+Looking for visual representations? Check out the **`[diagrams](./claude-code-xray/diagrams/)`** folder:
 
 ### 📊 SVG Diagrams — View Directly in Markdown
 
 | Diagram                                                                | Description                        |
 | ---------------------------------------------------------------------- | ---------------------------------- |
-| [`architecture-overview.svg`](./diagrams/architecture-overview.svg)     | High-level 5-layer architecture    |
-| [`tool-execution-pipeline.svg`](./diagrams/tool-execution-pipeline.svg) | 4-step tool execution              |
-| [`flow-overview.svg`](./diagrams/flow-overview.svg)                     | 8-step request-response flow       |
-| [`startup-sequence.svg`](./diagrams/startup-sequence.svg)               | Startup with prefetch optimization |
+| [`architecture-overview.svg`](./claude-code-xray/diagrams/architecture-overview.svg)     | High-level 5-layer architecture    |
+| [`tool-execution-pipeline.svg`](./claude-code-xray/diagrams/tool-execution-pipeline.svg) | 4-step tool execution              |
+| [`flow-overview.svg`](./claude-code-xray/diagrams/flow-overview.svg)                     | 8-step request-response flow       |
+| [`startup-sequence.svg`](./claude-code-xray/diagrams/startup-sequence.svg)               | Startup with prefetch optimization |
 
 #### Architecture Overview
 
-![Architecture Overview](./diagrams/architecture-overview.svg)
+![Architecture Mind Map](./claude-code-xray/diagrams/architecture-overview.svg)
 
 #### Tool Execution Pipeline
 
-![Tool Execution Pipeline](./diagrams/tool-execution-pipeline.svg)
+![Tool Execution Pipeline](./claude-code-xray/diagrams/tool-execution-pipeline.svg)
 
 #### Flow Overview
 
-![Flow Overview](./diagrams/flow-overview.svg)
+![Flow Mind Map](./claude-code-xray/diagrams/flow-overview.svg)
 
 #### Startup Sequence
 
-![Startup Sequence](./diagrams/startup-sequence.svg)
+![Startup Sequence](./claude-code-xray/diagrams/startup-sequence.svg)
 
 ---
 
@@ -387,13 +387,13 @@ Open these HTML files for the complete interactive experience:
 
 | File                                                               | What's Inside                                              |
 | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| [`architecture-mindmap.html`](./diagrams/architecture-mindmap.html) | 5-layer architecture, tool pipeline, request-response flow |
-| [`flow-mindmap.html`](./diagrams/flow-mindmap.html)                 | Complete flow, startup sequence, session lifecycle         |
+| [`architecture-mindmap.html`](./claude-code-xray/diagrams/architecture-mindmap.html) | 5-layer architecture, tool pipeline, request-response flow |
+| [`flow-mindmap.html`](./claude-code-xray/diagrams/flow-mindmap.html)                 | Complete flow, startup sequence, session lifecycle         |
 
 ```bash
 # Open in browser
-open diagrams/architecture-mindmap.html
-open diagrams/flow-mindmap.html
+open claude-code-xray/diagrams/architecture-mindmap.html
+open claude-code-xray/diagrams/flow-mindmap.html
 ```
 
 ---

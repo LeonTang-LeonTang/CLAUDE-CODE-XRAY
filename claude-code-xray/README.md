@@ -16,7 +16,7 @@
 
 [![Video Tutorial: Claude Code X-Ray - I Reverse Engineered Claude Code Here's How It Actually Works](./video-thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
-**[▶ Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)** &nbsp;|&nbsp; **[📄 Video Script](./video-tutorial-script.md)**
+**[▶ Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)**
 
 </p>
 
