@@ -12,7 +12,6 @@
 *.m4a
 *.aac
 claude-code-xray-tutorial.mp4
-video-thumbnail.png
 
 # Temp files
 *.log
