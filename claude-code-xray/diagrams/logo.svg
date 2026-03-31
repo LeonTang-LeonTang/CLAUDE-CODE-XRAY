@@ -1,0 +1,77 @@
+<svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for main circle -->
+    <linearGradient id="logoGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="50%" style="stop-color:#764ba2"/>
+      <stop offset="100%" style="stop-color:#f093fb"/>
+    </linearGradient>
+    
+    <!-- Gradient for accent -->
+    <linearGradient id="logoGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb"/>
+      <stop offset="100%" style="stop-color:#f5576c"/>
+    </linearGradient>
+    
+    <!-- Gradient for X mark -->
+    <linearGradient id="logoGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b"/>
+      <stop offset="100%" style="stop-color:#38f9d7"/>
+    </linearGradient>
+    
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background glow circle -->
+  <circle cx="60" cy="60" r="50" fill="url(#logoGrad1)" filter="url(#glow)" opacity="0.3"/>
+  
+  <!-- Main circle -->
+  <circle cx="60" cy="60" r="45" fill="url(#logoGrad1)" filter="url(#shadow)"/>
+  
+  <!-- Claude brain pattern - layers representing architecture -->
+  <ellipse cx="60" cy="50" rx="25" ry="15" fill="none" stroke="#fff" stroke-width="2" opacity="0.9"/>
+  <ellipse cx="60" cy="60" rx="30" ry="18" fill="none" stroke="#fff" stroke-width="2" opacity="0.7"/>
+  <ellipse cx="60" cy="70" rx="25" ry="12" fill="none" stroke="#fff" stroke-width="2" opacity="0.5"/>
+  
+  <!-- X-ray lines -->
+  <line x1="40" y1="45" x2="80" y2="75" stroke="#fff" stroke-width="2" opacity="0.8"/>
+  <line x1="50" y1="40" x2="70" y2="80" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+  <line x1="45" y1="80" x2="75" y2="45" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Accent badge -->
+  <circle cx="95" cy="25" r="18" fill="url(#logoGrad2)" filter="url(#shadow)"/>
+  <text x="95" y="30" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold" font-family="system-ui">X</text>
+  
+  <!-- Text: CLAUDE CODE -->
+  <text x="120" y="55" fill="#1a1a2e" font-size="32" font-weight="bold" font-family="system-ui, -apple-system, sans-serif">
+    <tspan fill="url(#logoGrad1)">Claude</tspan>
+    <tspan fill="url(#logoGrad2)">Code</tspan>
+  </text>
+  
+  <!-- Text: XRAY -->
+  <text x="120" y="85" fill="#667eea" font-size="24" font-weight="bold" font-family="system-ui, -apple-system, sans-serif" letter-spacing="8">
+    X-RAY
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="120" y="108" fill="#666" font-size="12" font-family="system-ui, -apple-system, sans-serif">
+    Reverse Engineered
+  </text>
+  
+  <!-- Decorative dots -->
+  <circle cx="340" cy="50" r="4" fill="#667eea"/>
+  <circle cx="355" cy="50" r="4" fill="#f093fb"/>
+  <circle cx="370" cy="50" r="4" fill="#43e97b"/>
+</svg>

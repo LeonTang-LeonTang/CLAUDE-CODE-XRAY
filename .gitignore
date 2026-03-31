@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Video / audio artifacts
+*.mp4
+*.mov
+*.aiff
+*.mp3
+*.wav
+*.m4a
+*.aac
+claude-code-xray-tutorial.mp4
+video-thumbnail.png
+
+# Temp files
+*.log
+/tmp/
+*.swp
+*.swo
+*~
+
+# Large data
+node_modules/
+*.pyc
+__pycache__/
+
+# Frames / capture
+video-frames/
+frames/

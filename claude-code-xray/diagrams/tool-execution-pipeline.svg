@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1200 450" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="detectGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ff6b6b"/>
+            <stop offset="100%" style="stop-color:#feca57"/>
+        </linearGradient>
+        <linearGradient id="permGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#5f27cd"/>
+            <stop offset="100%" style="stop-color:#a55eea"/>
+        </linearGradient>
+        <linearGradient id="execGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00d2d3"/>
+            <stop offset="100%" style="stop-color:#54a0ff"/>
+        </linearGradient>
+        <linearGradient id="resultGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#10ac84"/>
+            <stop offset="100%" style="stop-color:#1dd1a1"/>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="3" dy="3" stdDeviation="3" flood-opacity="0.3"/>
+        </filter>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#667eea"/>
+        </marker>
+    </defs>
+    
+    <!-- Title -->
+    <text x="600" y="35" text-anchor="middle" fill="#333" font-size="20" font-weight="bold">Tool Execution Pipeline</text>
+    
+    <!-- Step 1: Detection -->
+    <g filter="url(#shadow)">
+        <rect x="30" y="60" width="200" height="180" rx="15" fill="url(#detectGrad)"/>
+        <text x="130" y="90" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">1. DETECTION</text>
+        
+        <rect x="50" y="110" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="130" y="133" text-anchor="middle" fill="#fff" font-size="11">Stream Response</text>
+        
+        <rect x="50" y="155" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="130" y="178" text-anchor="middle" fill="#fff" font-size="11">Parse Event</text>
+        
+        <rect x="50" y="200" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="130" y="223" text-anchor="middle" fill="#fff" font-size="11">ToolUseBlock</text>
+    </g>
+    
+    <!-- Arrow 1 -->
+    <path d="M240 150 L320 150" stroke="#ff6b6b" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 2: Permission -->
+    <g filter="url(#shadow)">
+        <rect x="330" y="60" width="200" height="180" rx="15" fill="url(#permGrad)"/>
+        <text x="430" y="90" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">2. PERMISSION</text>
+        
+        <rect x="350" y="110" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="430" y="133" text-anchor="middle" fill="#fff" font-size="11">Check canUseTool()</text>
+        
+        <rect x="350" y="155" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="430" y="178" text-anchor="middle" fill="#fff" font-size="11">Permission State</text>
+        
+        <rect x="350" y="200" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="430" y="223" text-anchor="middle" fill="#fff" font-size="11">User Approval?</text>
+    </g>
+    
+    <!-- Arrow 2 -->
+    <path d="M540 150 L620 150" stroke="#5f27cd" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 3: Execution -->
+    <g filter="url(#shadow)">
+        <rect x="630" y="60" width="200" height="180" rx="15" fill="url(#execGrad)"/>
+        <text x="730" y="90" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">3. EXECUTION</text>
+        
+        <rect x="650" y="110" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="730" y="133" text-anchor="middle" fill="#fff" font-size="11">findTool()</text>
+        
+        <rect x="650" y="150" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="730" y="173" text-anchor="middle" fill="#fff" font-size="11">Partition Safety</text>
+        
+        <rect x="650" y="190" width="75" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="687" y="213" text-anchor="middle" fill="#fff" font-size="10">Parallel</text>
+        
+        <rect x="735" y="190" width="75" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="772" y="213" text-anchor="middle" fill="#fff" font-size="10">Serial</text>
+    </g>
+    
+    <!-- Arrow 3 -->
+    <path d="M840 150 L920 150" stroke="#00d2d3" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 4: Result -->
+    <g filter="url(#shadow)">
+        <rect x="930" y="60" width="200" height="180" rx="15" fill="url(#resultGrad)"/>
+        <text x="1030" y="90" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">4. RESULT</text>
+        
+        <rect x="950" y="110" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="1030" y="133" text-anchor="middle" fill="#fff" font-size="11">Format Result</text>
+        
+        <rect x="950" y="155" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="1030" y="178" text-anchor="middle" fill="#fff" font-size="11">Add to Messages</text>
+        
+        <rect x="950" y="200" width="160" height="35" rx="8" fill="rgba(255,255,255,0.2)"/>
+        <text x="1030" y="223" text-anchor="middle" fill="#fff" font-size="11">Loop or Exit</text>
+    </g>
+    
+    <!-- Loop back arrow -->
+    <path d="M1030 250 L1030 300 L130 300 L130 250" stroke="#10ac84" stroke-width="3" fill="none" stroke-dasharray="8,4"/>
+    <text x="580" y="320" text-anchor="middle" fill="#10ac84" font-size="14" font-weight="bold">Loop: More Tools?</text>
+    
+    <!-- Tool Types -->
+    <g transform="translate(50, 340)">
+        <rect x="0" y="0" width="300" height="80" rx="10" fill="#e8f5e9"/>
+        <text x="150" y="25" text-anchor="middle" fill="#2e7d32" font-size="13" font-weight="bold">Read-Only Tools (Parallel)</text>
+        <rect x="20" y="40" width="80" height="30" rx="6" fill="#fff"/>
+        <text x="60" y="60" text-anchor="middle" fill="#2e7d32" font-size="10">FileReadTool</text>
+        <rect x="110" y="40" width="70" height="30" rx="6" fill="#fff"/>
+        <text x="145" y="60" text-anchor="middle" fill="#2e7d32" font-size="10">GlobTool</text>
+        <rect x="190" y="40" width="70" height="30" rx="6" fill="#fff"/>
+        <text x="225" y="60" text-anchor="middle" fill="#2e7d32" font-size="10">GrepTool</text>
+        
+        <rect x="370" y="0" width="380" height="80" rx="10" fill="#ffebee"/>
+        <text x="560" y="25" text-anchor="middle" fill="#c62828" font-size="13" font-weight="bold">Stateful Tools (Serial)</text>
+        <rect x="390" y="40" width="90" height="30" rx="6" fill="#fff"/>
+        <text x="435" y="60" text-anchor="middle" fill="#c62828" font-size="10">BashTool</text>
+        <rect x="495" y="40" width="110" height="30" rx="6" fill="#fff"/>
+        <text x="550" y="60" text-anchor="middle" fill="#c62828" font-size="10">FileWriteTool</text>
+        <rect x="620" y="40" width="100" height="30" rx="6" fill="#fff"/>
+        <text x="670" y="60" text-anchor="middle" fill="#c62828" font-size="10">FileEditTool</text>
+    </g>
+</svg>

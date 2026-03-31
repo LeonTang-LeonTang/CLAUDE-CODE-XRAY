@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Execution Flow Mind Map</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .mindmap {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow-x: auto;
+        }
+        .mindmap h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Claude Code Execution Flow Mind Map</h1>
+        
+        <!-- Complete Request-Response Flow -->
+        <div class="mindmap">
+            <h2>🔄 Complete Request-Response Flow</h2>
+            <svg viewBox="0 0 1600 600" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="startGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea"/>
+                        <stop offset="100%" style="stop-color:#764ba2"/>
+                    </linearGradient>
+                    <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#f093fb"/>
+                        <stop offset="100%" style="stop-color:#f5576c"/>
+                    </linearGradient>
+                    <linearGradient id="processGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4facfe"/>
+                        <stop offset="100%" style="stop-color:#00f2fe"/>
+                    </linearGradient>
+                    <linearGradient id="contextGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#43e97b"/>
+                        <stop offset="100%" style="stop-color:#38f9d7"/>
+                    </linearGradient>
+                    <linearGradient id="queryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fa709a"/>
+                        <stop offset="100%" style="stop-color:#fee140"/>
+                    </linearGradient>
+                    <linearGradient id="apiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a8edea"/>
+                        <stop offset="100%" style="stop-color:#fed6e3"/>
+                    </linearGradient>
+                    <linearGradient id="toolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff6b6b"/>
+                        <stop offset="100%" style="stop-color:#feca57"/>
+                    </linearGradient>
+                    <linearGradient id="completeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#10ac84"/>
+                        <stop offset="100%" style="stop-color:#1dd1a1"/>
+                    </linearGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="3" dy="3" stdDeviation="3" flood-opacity="0.3"/>
+                    </filter>
+                </defs>
+                
+                <!-- Row 1: User Input to Build Context -->
+                <g filter="url(#shadow)">
+                    <rect x="30" y="50" width="180" height="100" rx="15" fill="url(#userGrad)"/>
+                    <text x="120" y="85" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">1. USER INPUT</text>
+                    <text x="120" y="105" text-anchor="middle" fill="#fff" font-size="10">Type message</text>
+                    <text x="120" y="125" text-anchor="middle" fill="#fff" font-size="10">Press Enter</text>
+                </g>
+                
+                <path d="M220 100 L280 100" stroke="#f093fb" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="290" y="50" width="180" height="100" rx="15" fill="url(#processGrad)"/>
+                    <text x="380" y="85" text-anchor="middle" fill="#01579b" font-size="14" font-weight="bold">2. PROCESS INPUT</text>
+                    <text x="380" y="105" text-anchor="middle" fill="#01579b" font-size="10">Parse slash commands</text>
+                    <text x="380" y="125" text-anchor="middle" fill="#01579b" font-size="10">Attach files/images</text>
+                </g>
+                
+                <path d="M480 100 L540 100" stroke="#4facfe" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="550" y="50" width="180" height="100" rx="15" fill="url(#contextGrad)"/>
+                    <text x="640" y="85" text-anchor="middle" fill="#1b5e20" font-size="14" font-weight="bold">3. BUILD CONTEXT</text>
+                    <text x="640" y="105" text-anchor="middle" fill="#1b5e20" font-size="10">Git status</text>
+                    <text x="640" y="125" text-anchor="middle" fill="#1b5e20" font-size="10">Memory files</text>
+                </g>
+                
+                <!-- Row 2: Query to Stream -->
+                <path d="M640 160 L640 220" stroke="#43e97b" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="550" y="230" width="180" height="100" rx="15" fill="url(#queryGrad)"/>
+                    <text x="640" y="265" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">4. QUERY ENGINE</text>
+                    <text x="640" y="285" text-anchor="middle" fill="#fff" font-size="10">Orchestrate flow</text>
+                    <text x="640" y="305" text-anchor="middle" fill="#fff" font-size="10">Handle events</text>
+                </g>
+                
+                <path d="M740 280 L800 280" stroke="#fa709a" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="810" y="230" width="180" height="100" rx="15" fill="url(#apiGrad)"/>
+                    <text x="900" y="265" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">5. API CALL</text>
+                    <text x="900" y="285" text-anchor="middle" fill="#333" font-size="10">Send messages</text>
+                    <text x="900" y="305" text-anchor="middle" fill="#333" font-size="10">Stream response</text>
+                </g>
+                
+                <!-- Row 3: Tool Execution -->
+                <path d="M900 340 L900 400" stroke="#a8edea" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="810" y="410" width="180" height="100" rx="15" fill="url(#toolGrad)"/>
+                    <text x="900" y="445" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">6. TOOL EXECUTION</text>
+                    <text x="900" y="465" text-anchor="middle" fill="#fff" font-size="10">Check permissions</text>
+                    <text x="900" y="485" text-anchor="middle" fill="#fff" font-size="10">Run tools</text>
+                </g>
+                
+                <path d="M810 460 L750 460" stroke="#ff6b6b" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="550" y="410" width="180" height="100" rx="15" fill="url(#completeGrad)"/>
+                    <text x="640" y="445" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">7. UPDATE STATE</text>
+                    <text x="640" y="465" text-anchor="middle" fill="#fff" font-size="10">Add to messages</text>
+                    <text x="640" y="485" text-anchor="middle" fill="#fff" font-size="10">Update store</text>
+                </g>
+                
+                <path d="M540 460 L480 460" stroke="#10ac84" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <rect x="290" y="410" width="180" height="100" rx="15" fill="url(#startGrad)"/>
+                    <text x="380" y="445" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">8. DISPLAY UI</text>
+                    <text x="380" y="465" text-anchor="middle" fill="#fff" font-size="10">Stream to terminal</text>
+                    <text x="380" y="485" text-anchor="middle" fill="#fff" font-size="10">Show results</text>
+                </g>
+                
+                <!-- Loop Arrow -->
+                <path d="M280 460 L280 550 L640 550 L640 160" stroke="#667eea" stroke-width="3" fill="none" stroke-dasharray="10,5"/>
+                <text x="460" y="575" text-anchor="middle" fill="#667eea" font-size="14" font-weight="bold">LOOP: Continue if more tool calls needed</text>
+                
+                <!-- Details Panel -->
+                <g transform="translate(1030, 50)">
+                    <rect x="0" y="0" width="250" height="460" rx="15" fill="#f8f9fa"/>
+                    <text x="20" y="30" fill="#333" font-size="16" font-weight="bold">Flow Details</text>
+                    
+                    <rect x="15" y="50" width="220" height="60" rx="10" fill="#fff"/>
+                    <text x="25" y="70" fill="#e91e63" font-size="12" font-weight="bold">Step 1: User Input</text>
+                    <text x="25" y="90" fill="#666" font-size="10">• Terminal captures keystrokes</text>
+                    <text x="25" y="105" fill="#666" font-size="10">• REPL processes input</text>
+                    
+                    <rect x="15" y="120" width="220" height="60" rx="10" fill="#fff"/>
+                    <text x="25" y="140" fill="#00bcd4" font-size="12" font-weight="bold">Step 2: Process Input</text>
+                    <text x="25" y="160" fill="#666" font-size="10">• Parse slash commands</text>
+                    <text x="25" y="175" fill="#666" font-size="10">• Handle @mentions</text>
+                    
+                    <rect x="15" y="190" width="220" height="60" rx="10" fill="#fff"/>
+                    <text x="25" y="210" fill="#4caf50" font-size="12" font-weight="bold">Step 3: Build Context</text>
+                    <text x="25" y="230" fill="#666" font-size="10">• Get git status</text>
+                    <text x="25" y="245" fill="#666" font-size="10">• Load .claude/memory.md</text>
+                    
+                    <rect x="15" y="260" width="220" height="60" rx="10" fill="#fff"/>
+                    <text x="25" y="280" fill="#ff5722" font-size="12" font-weight="bold">Step 4-5: Query & API</text>
+                    <text x="25" y="300" fill="#666" font-size="10">• Send to Anthropic API</text>
+                    <text x="25" y="315" fill="#666" font-size="10">• Stream responses</text>
+                    
+                    <rect x="15" y="330" width="220" height="60" rx="10" fill="#fff"/>
+                    <text x="25" y="350" fill="#ff9800" font-size="12" font-weight="bold">Step 6: Tool Execution</text>
+                    <text x="25" y="370" fill="#666" font-size="10">• Check permissions</text>
+                    <text x="25" y="385" fill="#666" font-size="10">• Execute in pipeline</text>
+                    
+                    <rect x="15" y="400" width="220" height="50" rx="10" fill="#9c27b0"/>
+                    <text x="25" y="425" fill="#fff" font-size="12" font-weight="bold">Loop until complete</text>
+                </g>
+            </svg>
+        </div>
+        
+        <!-- Startup Sequence -->
+        <div class="mindmap">
+            <h2>🚀 Startup Sequence (Prefetch Optimization)</h2>
+            <svg viewBox="0 0 1500 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="timeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#667eea"/>
+                        <stop offset="100%" style="stop-color:#764ba2"/>
+                    </linearGradient>
+                </defs>
+                
+                <!-- Timeline -->
+                <rect x="50" y="50" width="1400" height="30" rx="15" fill="url(#timeGrad)"/>
+                <text x="750" y="70" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">Timeline: ~0ms to ~500ms</text>
+                
+                <!-- Time markers -->
+                <text x="50" y="40" fill="#667eea" font-size="12">T+0ms</text>
+                <text x="400" y="40" fill="#667eea" font-size="12">T+135ms</text>
+                <text x="700" y="40" fill="#667eea" font-size="12">T+300ms</text>
+                <text x="1000" y="40" fill="#667eea" font-size="12">T+450ms</text>
+                <text x="1300" y="40" fill="#667eea" font-size="12">T+500ms</text>
+                
+                <!-- Phase 1 -->
+                <g filter="url(#shadow)">
+                    <rect x="50" y="100" width="150" height="80" rx="10" fill="#f093fb"/>
+                    <text x="125" y="125" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Phase 1</text>
+                    <text x="125" y="145" text-anchor="middle" fill="#fff" font-size="10">Entry Point</text>
+                    <text x="125" y="165" text-anchor="middle" fill="#fff" font-size="9">(main.tsx)</text>
+                </g>
+                
+                <!-- Parallel operations -->
+                <rect x="210" y="100" width="200" height="80" rx="10" fill="#4facfe" opacity="0.7"/>
+                <text x="310" y="125" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">PARALLEL</text>
+                <text x="310" y="145" text-anchor="middle" fill="#fff" font-size="9">MDM Read</text>
+                <text x="310" y="160" text-anchor="middle" fill="#fff" font-size="9">Keychain Prefetch</text>
+                <text x="310" y="175" text-anchor="middle" fill="#fff" font-size="9">Module Imports</text>
+                
+                <!-- Arrow -->
+                <path d="M420 140 L480 140" stroke="#667eea" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <!-- Phase 2 -->
+                <g filter="url(#shadow)">
+                    <rect x="490" y="100" width="150" height="80" rx="10" fill="#43e97b"/>
+                    <text x="565" y="125" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Phase 2</text>
+                    <text x="565" y="145" text-anchor="middle" fill="#fff" font-size="10">Config Loading</text>
+                    <text x="565" y="165" text-anchor="middle" fill="#fff" font-size="9">+ Auth Setup</text>
+                </g>
+                
+                <!-- Arrow -->
+                <path d="M650 140 L710 140" stroke="#43e97b" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <!-- Phase 3 -->
+                <g filter="url(#shadow)">
+                    <rect x="720" y="100" width="150" height="80" rx="10" fill="#fa709a"/>
+                    <text x="795" y="125" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Phase 3</text>
+                    <text x="795" y="145" text-anchor="middle" fill="#fff" font-size="10">MCP Servers</text>
+                    <text x="795" y="165" text-anchor="middle" fill="#fff" font-size="9">Connect</text>
+                </g>
+                
+                <!-- Arrow -->
+                <path d="M880 140 L940 140" stroke="#fa709a" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <!-- Phase 4 -->
+                <g filter="url(#shadow)">
+                    <rect x="950" y="100" width="150" height="80" rx="10" fill="#a8edea"/>
+                    <text x="1025" y="125" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Phase 4</text>
+                    <text x="1025" y="145" text-anchor="middle" fill="#333" font-size="10">State Init</text>
+                    <text x="1025" y="165" text-anchor="middle" fill="#333" font-size="9">+ Store Setup</text>
+                </g>
+                
+                <!-- Arrow -->
+                <path d="M1110 140 L1170 140" stroke="#a8edea" stroke-width="4" marker-end="url(#arrowhead)"/>
+                
+                <!-- Phase 5 -->
+                <g filter="url(#shadow)">
+                    <rect x="1180" y="100" width="150" height="80" rx="10" fill="#10ac84"/>
+                    <text x="1255" y="125" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Phase 5</text>
+                    <text x="1255" y="145" text-anchor="middle" fill="#fff" font-size="10">REPL Launch</text>
+                    <text x="1255" y="165" text-anchor="middle" fill="#fff" font-size="9">Ready!</text>
+                </g>
+                
+                <!-- Key Insight Box -->
+                <g transform="translate(50, 220)">
+                    <rect x="0" y="0" width="1400" height="150" rx="15" fill="#fff3e0"/>
+                    <text x="700" y="30" text-anchor="middle" fill="#e65100" font-size="16" font-weight="bold">💡 Key Optimization: I/O Before Imports!</text>
+                    
+                    <text x="30" y="60" fill="#333" font-size="13">The secret to Claude Code's fast startup:</text>
+                    
+                    <rect x="30" y="75" width="400" height="60" rx="10" fill="#fff"/>
+                    <text x="45" y="95" fill="#c2185b" font-size="12" font-weight="bold">Without Prefetch:</text>
+                    <text x="45" y="115" fill="#666" font-size="11">1. Load modules (135ms)</text>
+                    <text x="45" y="130" fill="#666" font-size="11">2. Read keychain (65ms) → Total: 200ms</text>
+                    
+                    <rect x="500" y="75" width="500" height="60" rx="10" fill="#e8f5e9"/>
+                    <text x="515" y="95" fill="#2e7d32" font-size="12" font-weight="bold">With Prefetch:</text>
+                    <text x="515" y="115" fill="#666" font-size="11">1. Start keychain read (parallel with imports)</text>
+                    <text x="515" y="130" fill="#666" font-size="11">2. Modules load + Keychain ready → Total: 135ms!</text>
+                    
+                    <text x="1050" y="95" fill="#333" font-size="12" font-weight="bold">Code:</text>
+                    <text x="1050" y="115" fill="#667eea" font-size="11">startMdmRawRead()</text>
+                    <text x="1050" y="130" fill="#667eea" font-size="11">startKeychainPrefetch()</text>
+                    <text x="1100" y="115" fill="#666" font-size="10">// BEFORE imports!</text>
+                </g>
+            </svg>
+        </div>
+        
+        <!-- Session Lifecycle -->
+        <div class="mindmap">
+            <h2>🔄 Session Lifecycle State Machine</h2>
+            <svg viewBox="0 0 1500 500" xmlns="http://www.w3.org/2000/svg">
+                <!-- States -->
+                <g filter="url(#shadow)">
+                    <ellipse cx="200" cy="250" rx="80" ry="40" fill="#667eea"/>
+                    <text x="200" y="255" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">[*]</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <rect x="350" y="100" width="150" height="70" rx="10" fill="#f093fb"/>
+                    <text x="425" y="130" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Init</text>
+                    <text x="425" y="150" text-anchor="middle" fill="#fff" font-size="11">Parse args</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <rect x="550" y="100" width="150" height="70" rx="10" fill="#4facfe"/>
+                    <text x="625" y="130" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Loading</text>
+                    <text x="625" y="150" text-anchor="middle" fill="#fff" font-size="11">Config loaded</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <rect x="750" y="100" width="150" height="70" rx="10" fill="#43e97b"/>
+                    <text x="825" y="130" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Auth</text>
+                    <text x="825" y="150" text-anchor="middle" fill="#fff" font-size="11">API key ready</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <rect x="950" y="100" width="150" height="70" rx="10" fill="#fa709a"/>
+                    <text x="1025" y="130" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">MCP</text>
+                    <text x="1025" y="150" text-anchor="middle" fill="#fff" font-size="11">Servers connected</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <circle cx="1100" cy="280" r="60" fill="#a8edea"/>
+                    <text x="1100" y="275" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">Ready</text>
+                    <text x="1100" y="295" text-anchor="middle" fill="#333" font-size="12">Idle state</text>
+                </g>
+                
+                <!-- Query State -->
+                <g filter="url(#shadow)">
+                    <rect x="750" y="350" width="150" height="70" rx="10" fill="#fee140"/>
+                    <text x="825" y="380" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Query</text>
+                    <text x="825" y="400" text-anchor="middle" fill="#333" font-size="11">Processing</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <rect x="950" y="350" width="150" height="70" rx="10" fill="#ff6b6b"/>
+                    <text x="1025" y="380" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Error</text>
+                    <text x="1025" y="400" text-anchor="middle" fill="#fff" font-size="11">Retry/Abort</text>
+                </g>
+                
+                <g filter="url(#shadow)">
+                    <rect x="550" y="350" width="150" height="70" rx="10" fill="#feca57"/>
+                    <text x="625" y="380" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Compact</text>
+                    <text x="625" y="400" text-anchor="middle" fill="#333" font-size="11">Context reduced</text>
+                </g>
+                
+                <!-- Arrows -->
+                <path d="M280 250 L340 130" stroke="#667eea" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <path d="M510 135 L540 135" stroke="#f093fb" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <path d="M710 135 L740 135" stroke="#4facfe" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <path d="M910 135 L940 135" stroke="#43e97b" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <path d="M1050 160 L1070 220" stroke="#fa709a" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <!-- Query flow -->
+                <path d="M1100 220 L1100 280" stroke="#a8edea" stroke-width="3"/>
+                <path d="M1100 340 L825 340" stroke="#a8edea" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <path d="M825 430 L1025 420" stroke="#fee140" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <path d="M1100 420 L1100 340" stroke="#fee140" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <!-- Error flow -->
+                <path d="M1100 340 L1025 420" stroke="#ff6b6b" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <path d="M1025 350 L825 350" stroke="#ff6b6b" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <!-- Exit -->
+                <path d="M1170 280 L1280 280" stroke="#10ac84" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <g filter="url(#shadow)">
+                    <ellipse cx="1330" cy="280" rx="50" ry="40" fill="#10ac84"/>
+                    <text x="1330" y="285" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">[*]</text>
+                </g>
+                
+                <!-- Labels -->
+                <text x="1000" y="250" fill="#666" font-size="10">User input</text>
+                <text x="900" y="320" fill="#666" font-size="10">Context full</text>
+                <text x="800" y="320" fill="#666" font-size="10">Resume</text>
+                <text x="900" y="390" fill="#666" font-size="10">API error</text>
+                <text x="700" y="390" fill="#666" font-size="10">Retry/Recover</text>
+                <text x="1200" y="260" fill="#666" font-size="10">/exit</text>
+            </svg>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                <span>Start/End</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                <span>Init Phase</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+                <span>Loading</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+                <span>Auth</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
+                <span>Query/Tools</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #a8edea, #fed6e3);"></div>
+                <span>Ready State</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

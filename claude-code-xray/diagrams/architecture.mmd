@@ -1,0 +1,442 @@
+# Claude Code Architecture Diagram
+
+## High-Level System Architecture
+
+```mermaid
+graph TB
+    subgraph CLI["CLI Layer"]
+        CLI_ENTRY["main.tsx<br/>(~4600 lines)"]
+        CLI_REPL["REPL Launcher"]
+        CLI_ARGS["Argument Parser"]
+        CLI_CMDS["100+ Commands"]
+    end
+
+    subgraph BRIDGE["Bridge Layer"]
+        BRIDGE_MAIN["bridgeMain.ts<br/>(~3000 lines)"]
+        BRIDGE_API["bridgeApi.ts"]
+        BRIDGE_SESSION["sessionRunner.ts"]
+        BRIDGE_PERMS["Permission System"]
+    end
+
+    subgraph QUERY["Query Engine"]
+        QUERY_MAIN["query.ts<br/>(~1700 lines)"]
+        QUERY_ENGINE["QueryEngine.ts<br/>(~1200 lines)"]
+        QUERY_CONTEXT["context.ts"]
+        QUERY_COMPACT["Compaction System"]
+    end
+
+    subgraph TOOLS["Tool System"]
+        TOOL_REG["Tool Registry<br/>(tools.ts)"]
+        TOOL_ORCH["Orchestration<br/>(toolOrchestration.ts)"]
+        TOOL_EXEC["Execution<br/>(toolExecution.ts)"]
+        
+        subgraph FILE_TOOLS["File Tools"]
+            FT_READ["FileReadTool"]
+            FT_EDIT["FileEditTool"]
+            FT_WRITE["FileWriteTool"]
+            FT_GLOB["GlobTool"]
+            FT_GREP["GrepTool"]
+        end
+        
+        subgraph SHELL_TOOLS["Shell Tools"]
+            ST_BASH["BashTool"]
+            ST_PWSH["PowerShellTool"]
+        end
+        
+        subgraph WEB_TOOLS["Web Tools"]
+            WT_SEARCH["WebSearchTool"]
+            WT_FETCH["WebFetchTool"]
+        end
+        
+        subgraph AGENT_TOOLS["Agent Tools"]
+            AT_MAIN["AgentTool"]
+            AT_TASK["Task Tools"]
+        end
+        
+        subgraph MCP_TOOLS["MCP Integration"]
+            MT_CLIENT["MCP Client"]
+            MT_WRAP["Tool Wrapper"]
+        end
+    end
+
+    subgraph STATE["State Layer"]
+        STATE_APP["AppState.tsx"]
+        STATE_STORE["Store (~35 lines)"]
+        STATE_HOOKS["88+ Hooks"]
+    end
+
+    subgraph UI["Terminal UI (Ink)"]
+        UI_RECON["React Reconciler"]
+        UI_LAYOUT["Layout Engine"]
+        UI_EVENTS["Event System"]
+        UI_COMP["Components"]
+    end
+
+    subgraph API["External"]
+        API_ANTHROPIC["Anthropic API"]
+        API_MCP["MCP Servers"]
+    end
+
+    CLI_ENTRY --> CLI_REPL
+    CLI_ENTRY --> CLI_CMDS
+    CLI_ENTRY --> CLI_ARGS
+    
+    CLI_REPL --> STATE_APP
+    CLI_ARGS --> BRIDGE_MAIN
+    CLI_CMDS --> QUERY_MAIN
+    
+    BRIDGE_MAIN --> BRIDGE_SESSION
+    BRIDGE_MAIN --> BRIDGE_API
+    BRIDGE_API --> API_ANTHROPIC
+    
+    QUERY_MAIN --> QUERY_ENGINE
+    QUERY_ENGINE --> QUERY_CONTEXT
+    QUERY_MAIN --> QUERY_COMPACT
+    
+    QUERY_ENGINE --> TOOL_ORCH
+    QUERY_ENGINE --> STATE_APP
+    
+    TOOL_ORCH --> TOOL_EXEC
+    TOOL_ORCH --> STATE_APP
+    TOOL_EXEC --> TOOL_REG
+    
+    TOOL_REG --> FILE_TOOLS
+    TOOL_REG --> SHELL_TOOLS
+    TOOL_REG --> WEB_TOOLS
+    TOOL_REG --> AGENT_TOOLS
+    TOOL_REG --> MCP_TOOLS
+    
+    TOOL_EXEC --> FILE_TOOLS
+    TOOL_EXEC --> SHELL_TOOLS
+    TOOL_EXEC --> WEB_TOOLS
+    TOOL_EXEC --> AGENT_TOOLS
+    TOOL_EXEC --> MCP_TOOLS
+    
+    MT_CLIENT --> API_MCP
+    
+    STATE_APP --> STATE_STORE
+    STATE_APP --> STATE_HOOKS
+    STATE_APP --> UI_RECON
+    
+    UI_RECON --> UI_LAYOUT
+    UI_RECON --> UI_EVENTS
+    UI_RECON --> UI_COMP
+```
+
+## Message Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant REPL
+    participant State
+    participant Query
+    participant API
+    participant Tools
+    participant UI
+    
+    User->>REPL: Input
+    REPL->>State: Update messages
+    State-->>Query: Trigger query
+    
+    Query->>Query: Build context
+    
+    loop Until Complete
+        Query->>API: Stream request
+        API-->>Query: Stream events
+        
+        alt Text Event
+            Query->>UI: text delta
+        end
+        
+        alt Tool Call
+            Query->>Tools: Execute tool
+            Tools-->>Query: Result
+            Query->>API: Continue request
+        end
+    end
+    
+    Query-->>State: Complete
+    State-->>UI: Update display
+    UI-->>User: Show response
+```
+
+## Tool Execution Pipeline
+
+```mermaid
+flowchart LR
+    subgraph DETECT["1. Detection"]
+        D_STREAM["Stream Response"]
+        D_PARSE["Parse Event"]
+        D_TOOL["ToolUseBlock"]
+    end
+    
+    subgraph PERM["2. Permission"]
+        P_CHECK["Check canUseTool"]
+        P_STATE["Permission State"]
+        P_ASK{"Approved?"}
+    end
+    
+    subgraph EXEC["3. Execution"]
+        E_FIND["findTool"]
+        E_PART["Partition Safety"]
+        E_PARALLEL["Parallel (Read-only)"]
+        E_SERIAL["Serial (Stateful)"]
+        E_PROGRESS["Stream Progress"]
+    end
+    
+    subgraph RESULT["4. Result"]
+        R_FORMAT["Format Result"]
+        R_ADD["Add to Messages"]
+        R_LOOP{"More Tools?"}
+        R_EXIT["Continue"]
+    end
+    
+    D_STREAM --> D_PARSE --> D_TOOL
+    D_TOOL --> P_CHECK --> P_STATE --> P_ASK
+    P_ASK -->|Yes| E_FIND
+    P_ASK -->|No| R_FORMAT
+    E_FIND --> E_PART --> E_PARALLEL
+    E_PART --> E_SERIAL
+    E_PARALLEL --> E_PROGRESS
+    E_SERIAL --> E_PROGRESS --> R_FORMAT
+    R_FORMAT --> R_ADD --> R_LOOP
+    R_LOOP -->|Yes| D_STREAM
+    R_LOOP -->|No| R_EXIT
+```
+
+## State Management Architecture
+
+```mermaid
+graph TB
+    subgraph STORE["createStore<T>"]
+        S_INIT["initialState: T"]
+        S_STATE["state: T"]
+        S_LISTENERS["listeners: Set"]
+        S_GET["getState()"]
+        S_SET["setState(updater)"]
+        S_SUB["subscribe(listener)"]
+    end
+    
+    subgraph APPSTATE["AppState"]
+        A_MSG["messages"]
+        A_TASKS["tasks"]
+        A_PERMS["permissions"]
+        A_TEAM["teammates"]
+        A_SESS["session"]
+    end
+    
+    subgraph PROVIDER["AppStateProvider"]
+        P_CREATE["createStore()"]
+        P_CONTEXT["React Context"]
+    end
+    
+    subgraph HOOKS["React Hooks"]
+        H_USE["useAppState()"]
+        H_CANUSE["useCanUseTool()"]
+        H_IDE["useIdeSelection()"]
+    end
+    
+    S_INIT --> S_STATE
+    S_STATE --> S_LISTENERS
+    S_STATE --> S_GET
+    S_STATE --> S_SET
+    S_SET --> S_LISTENERS
+    S_LISTENERS --> S_SUB
+    
+    APPSTATE --> STORE
+    STORE --> PROVIDER
+    PROVIDER --> H_USE
+    H_USE --> H_CANUSE
+    H_USE --> H_IDE
+```
+
+## Compaction Flow
+
+```mermaid
+sequenceDiagram
+    participant Query
+    participant Compact
+    participant API
+    participant Store
+    
+    Query->>Query: Check token count
+    
+    alt Token limit approaching
+        Query->>Compact: Trigger compaction
+        
+        Compact->>Store: Get all messages
+        Store-->>Compact: messages
+        
+        Compact->>Compact: Find boundary
+        
+        Note right of Compact: Skip recent messages<br/>Skip tool results
+        
+        Compact->>Compact: Extract older messages
+        
+        Compact->>API: Summarize request
+        API-->>Compact: summary text
+        
+        Compact->>Compact: Create boundary message
+        Compact->>Store: Replace with summary
+        Store-->>Query: Compacted messages
+        
+        Query->>Query: Continue query
+    end
+```
+
+## MCP Integration
+
+```mermaid
+graph TB
+    subgraph CC["Claude Code"]
+        MC_CLIENT["MCP Client"]
+        MC_TOOL["MCPTool"]
+        MC_RES["Resource Tools"]
+    end
+    
+    subgraph TRANS["Transport"]
+        T_STDIO["stdio"]
+        T_SSE["SSE"]
+        T_HTTP["HTTP"]
+    end
+    
+    subgraph PROT["Protocol"]
+        P_INIT["initialize"]
+        P_LIST["list_tools"]
+        P_CALL["call_tool"]
+        P_RES["list_resources"]
+        P_READ["read_resource"]
+    end
+    
+    subgraph SERVER["MCP Server"]
+        S_HANDLER["Tool Handler"]
+        S_RES["Resource Handler"]
+    end
+    
+    MC_CLIENT --> T_STDIO
+    MC_CLIENT --> T_SSE
+    MC_CLIENT --> T_HTTP
+    
+    T_STDIO --> P_INIT
+    T_SSE --> P_INIT
+    T_HTTP --> P_INIT
+    
+    P_INIT --> P_LIST
+    P_INIT --> P_CALL
+    P_INIT --> P_RES
+    P_INIT --> P_READ
+    
+    P_LIST --> S_HANDLER
+    P_CALL --> S_HANDLER
+    P_RES --> S_RES
+    P_READ --> S_RES
+    
+    MC_TOOL --> MC_CLIENT
+    MC_RES --> MC_CLIENT
+```
+
+## Session Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Init
+    
+    Init --> Loading: Parse args
+    Loading --> Configured: Load settings
+    Configured --> Auth: Setup auth
+    Auth --> MCP: Connect servers
+    MCP --> Ready: All ready
+    
+    Ready --> Query: User input
+    Query --> Tools: Tool call
+    Tools --> Query: Result
+    Query --> Ready: Complete
+    
+    Ready --> Compact: Context full
+    Compact --> Query: Resume
+    
+    Query --> Error: API error
+    Error --> Retry: Backoff
+    Retry --> Query: Retry
+    Retry --> Fail: Give up
+    
+    Ready --> [*]: /exit
+    Fail --> [*]
+```
+
+## File Structure Overview
+
+```mermaid
+graph TB
+    ROOT["claude-code-source-code/"]
+    
+    ROOT --> MAIN["main.tsx (~4600 lines)"]
+    ROOT --> QUERY["query.ts (~1700 lines)"]
+    ROOT --> ENGINE["QueryEngine.ts (~1200 lines)"]
+    ROOT --> TOOL_TS["Tool.ts (~700 lines)"]
+    ROOT --> TOOLS_TS["tools.ts (~400 lines)"]
+    
+    ROOT --> CLI["cli/"]
+    ROOT --> CMDS["commands/ (100+)"]
+    ROOT --> BRIDGE["bridge/ (33 files)"]
+    ROOT --> STATE["state/"]
+    ROOT --> INK["ink/"]
+    
+    STATE --> STATE_AST["AppState.tsx"]
+    STATE --> STATE_STORE["store.ts (~35 lines)"]
+    
+    INK --> INK_RECON["reconciler.ts"]
+    INK --> INK_COMP["components/"]
+    INK --> INK_LAY["layout/"]
+    
+    CMDS --> CMD_MAIN["commands.ts (~25000 lines)"]
+    
+    BRIDGE --> BRIDGE_MAIN["bridgeMain.ts (~3000 lines)"]
+    BRIDGE --> BRIDGE_API["bridgeApi.ts"]
+    BRIDGE --> BRIDGE_SESSION["sessionRunner.ts"]
+```
+
+## Concurrency Model
+
+```mermaid
+flowchart TB
+    subgraph READ_ONLY["Read-Only Tools (Parallel)"]
+        R1["FileReadTool"]
+        R2["GlobTool"]
+        R3["GrepTool"]
+        R4["WebFetchTool"]
+    end
+    
+    subgraph STATEFUL["Stateful Tools (Serial)"]
+        S1["BashTool"]
+        S2["FileWriteTool"]
+        S3["FileEditTool"]
+    end
+    
+    subgraph PARTITION["Partitioning Logic"]
+        P["runTools()"]
+    end
+    
+    P --> READ_ONLY
+    P --> STATEFUL
+```
+
+## Permission State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Ready
+    
+    Ready --> Requesting: Tool called
+    Requesting --> Approved: User approves
+    Requesting --> Denied: User denies
+    Approved --> Ready: Tool completes
+    Denied --> Ready: Done
+    
+    Ready --> Bypass: permissionMode bypass
+    Bypass --> Ready: Tool completes
+    
+    Note over Ready: canUseTool returns true
+    Note over Requesting: UI shows prompt
+```

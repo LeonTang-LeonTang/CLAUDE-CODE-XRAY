@@ -1,0 +1,449 @@
+# Claude Code Execution Flow Diagram
+
+## Complete Request-Response Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant REPL
+    participant CLI
+    participant Process
+    participant Context
+    participant Query
+    participant API
+    participant Engine
+    participant Tools
+    participant State
+    participant UI
+    
+    User->>REPL: "Create component"
+    REPL->>CLI: handleInput()
+    
+    Note over CLI: Parse slash commands<br/>Check attachments
+    
+    CLI->>Process: processUserInput()
+    
+    Process->>Process: Parse mentions
+    Process->>Process: Attach files
+    
+    alt Hook blocking
+        Process-->>UI: Show block reason
+    end
+    
+    Process->>Context: buildContext()
+    
+    par Parallel context gathering
+        Context->>Context: getGitStatus()
+        Context->>Context: getBranch()
+        Context->>Context: getMemoryFiles()
+        Context->>Context: getProjectInfo()
+    end
+    
+    Context-->>Query: Context + messages
+    
+    Query->>Engine: query()
+    
+    Engine->>API: messages.stream()
+    
+    loop Streaming events
+        API-->>Engine: content_block_delta
+        Engine->>Engine: Process event
+        
+        alt Text delta
+            Engine->>UI: text event
+        end
+        
+        alt Tool call start
+            Engine->>UI: tool start
+        end
+        
+        alt Tool input delta
+            Engine->>UI: tool input
+        end
+        
+        alt Tool complete
+            Engine->>Tools: Execute tool
+            
+            Tools->>State: Check permission
+            
+            alt Not permitted
+                State->>UI: Permission prompt
+                UI-->>State: User approves
+            end
+            
+            State-->>Tools: Proceed
+            
+            Tools->>Tools: Run tool
+            
+            loop Progress
+                Tools->>UI: Progress update
+            end
+            
+            Tools-->>Engine: Tool result
+        end
+    end
+    
+    API-->>Engine: message_stop
+    Engine-->>Query: Complete
+    Query-->>State: Update messages
+    State-->>UI: Final state
+    UI-->>User: Ready for next input
+```
+
+## Startup Sequence
+
+```mermaid
+sequenceDiagram
+    participant Entry as main.tsx
+    participant Profile as Profiler
+    participant MDM as MDM Read
+    participant Keychain as Keychain
+    participant Config as Config
+    participant Auth as Auth
+    participant MCP as MCP Servers
+    participant State as AppState
+    participant UI as Ink UI
+    
+    Entry->>Profile: profileCheckpoint('start')
+    Entry->>MDM: startMdmRawRead()
+    Entry->>Keychain: startKeychainPrefetch()
+    
+    Note over Entry,UI: ~135ms of module loading<br/>(MDM and Keychain run in parallel)
+    
+    Entry->>Profile: profileCheckpoint('loaded')
+    
+    par Configuration Loading
+        Entry->>Config: Load settings
+        Entry->>Auth: Check API key
+    end
+    
+    Config-->>Entry: Settings loaded
+    Auth-->>Entry: Auth ready
+    
+    Entry->>MCP: Connect servers
+    
+    MCP-->>Entry: Servers ready
+    
+    Entry->>State: Initialize store
+    
+    State-->>Entry: Store ready
+    
+    Entry->>UI: Render app
+    UI-->>User: Welcome message
+```
+
+## Tool Execution Flow
+
+```mermaid
+flowchart TD
+    START["Tool Call Detected"]
+    
+    START --> FIND["findToolByName()"]
+    FIND --> TOOL{"Tool Found?"}
+    
+    TOOL -->|No| ERR1["Error: Tool not found"]
+    TOOL -->|Yes| VALID["Validate Input"]
+    
+    VALID --> SCHEMA["JSON Schema validation"]
+    SCHEMA --> VALID_OK{"Valid?"}
+    
+    VALID_OK -->|No| ERR2["Error: Invalid input"]
+    VALID_OK -->|Yes| PERM["Check Permission"]
+    
+    PERM --> STATE["canUseTool()"]
+    STATE --> PERM_OK{"Can Use?"}
+    
+    PERM_OK -->|No| REQUEST["Request Permission"]
+    REQUEST --> USER{"User Response"}
+    
+    USER -->|Deny| ERR3["Permission Denied"]
+    USER -->|Approve| PARTITION["Partition by Safety"]
+    
+    PERM_OK -->|Yes| PARTITION
+    
+    PARTITION --> SAFETY{"Concurrency Safe?"}
+    
+    SAFETY -->|Yes| PARALLEL["Run Concurrently"]
+    SAFETY -->|No| SERIAL["Run Serially"]
+    
+    PARALLEL --> EXEC["Tool.execute()"]
+    SERIAL --> EXEC
+    
+    EXEC --> PROGRESS{"Streaming?"}
+    
+    PROGRESS -->|Yes| STREAM["Yield progress events"]
+    STREAM --> RESULT["Get result"]
+    
+    PROGRESS -->|No| RESULT
+    
+    RESULT --> FORMAT["Format result"]
+    FORMAT --> SUCCESS["Success message"]
+    
+    ERR1 --> END
+    ERR2 --> END
+    ERR3 --> END
+    SUCCESS --> END["Return to Query"]
+```
+
+## Permission State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Ready
+    
+    Ready --> Requesting: Tool called
+    Requesting --> Approved: User approves
+    Requesting --> Denied: User denies
+    Approved --> Ready: Tool completes
+    Denied --> Ready: Done
+    
+    Ready --> Bypass: permissionMode bypass
+    Bypass --> Ready: Tool completes
+    
+    Note over Ready: canUseTool returns true
+    Note over Requesting: UI shows prompt
+    Note over Bypass: No prompt shown
+```
+
+## Context Compaction Sequence
+
+```mermaid
+sequenceDiagram
+    participant Query
+    participant Engine
+    participant Compact
+    participant API
+    participant Store
+    
+    Query->>Engine: Check tokens
+    Engine-->>Query: At 85% limit
+    
+    Query->>Compact: Compact needed
+    
+    Compact->>Store: Get messages
+    Store-->>Compact: messages[0..N]
+    
+    Compact->>Compact: findCompactBoundary()
+    
+    Note over Compact: Find oldest message<br/>that's safe to compact
+    
+    Compact->>Compact: Extract older messages
+    Compact->>Compact: Keep recent messages
+    
+    Compact->>API: Summarize older
+    API-->>Compact: Summary text
+    
+    Compact->>Compact: Create boundary message
+    
+    Note over Compact: boundary = {<br/>  type: compact_boundary,<br/>  summary: ...,<br/>  originalCount: 50<br/>}
+    
+    Compact->>Store: Replace with boundary
+    
+    Store-->>Compact: Updated
+    
+    Compact-->>Query: Compacted messages
+    
+    Query->>Engine: Continue with less context
+```
+
+## Session Management Flow
+
+```mermaid
+flowchart TD
+    START["Session Start"]
+    
+    START --> GEN_ID["Generate Session ID"]
+    GEN_ID --> INIT["Initialize State"]
+    
+    INIT --> LOAD["Load Session History?"]
+    LOAD --> CHOICE{"User Choice"}
+    
+    CHOICE -->|New Session| EMPTY["Empty messages"]
+    CHOICE -->|Resume| LOAD_SNAP["Load Snapshot"]
+    CHOICE -->|Resume| PARSE_SNAP["Parse Session Data"]
+    
+    LOAD_SNAP --> PARSE_SNAP
+    PARSE_SNAP --> RESTORE["Restore State"]
+    
+    EMPTY --> READY["Ready for Input"]
+    RESTORE --> READY
+    
+    READY --> INPUT["User Input"]
+    INPUT --> PROCESS["Process Input"]
+    
+    PROCESS --> NEW_MSG["Create Message"]
+    NEW_MSG --> QUERY["Run Query"]
+    
+    QUERY --> EVENT{"Event Type"}
+    
+    EVENT -->|Text| DISPLAY["Stream to UI"]
+    EVENT -->|Tool| EXEC["Execute Tool"]
+    EVENT -->|Error| HANDLE["Handle Error"]
+    
+    DISPLAY --> MORE{"More Events?"}
+    EXEC --> TOOL_RET["Tool Result"]
+    HANDLE --> RECOVER["Recover?"]
+    
+    TOOL_RET --> ADD["Add to Messages"]
+    ADD --> QUERY
+    
+    MORE -->|Yes| QUERY
+    MORE -->|No| COMPLETE["Query Complete"]
+    
+    COMPLETE --> CHECK{"Should Compact?"}
+    CHECK -->|Yes| COMPACT["Compact Context"]
+    CHECK -->|No| READY
+    
+    RECOVER -->|Yes| QUERY
+    RECOVER -->|No| FAIL["Log Error"]
+    
+    COMPACT --> READY
+    
+    READY --> EXIT["/exit Command"]
+    EXIT --> SAVE["Save Session"]
+    SAVE --> CLEANUP["Cleanup"]
+    CLEANUP --> END["Process Exit"]
+    
+    FAIL --> SAVE
+```
+
+## Multi-Agent Coordination
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Main as Main Agent
+    participant Task as Task Manager
+    participant Agent1 as Sub-Agent A
+    participant Agent2 as Sub-Agent B
+    participant Tools as Tool System
+    
+    User->>Main: "Implement feature"
+    
+    Main->>Main: Analyze task
+    
+    Main->>Task: Create subtasks
+    
+    par Parallel execution
+        Task->>Agent1: Task 1
+        Task->>Agent2: Task 2
+    end
+    
+    Agent1->>Tools: Use tools
+    Agent2->>Tools: Use tools
+    
+    Tools-->>Agent1: Results
+    Tools-->>Agent2: Results
+    
+    Agent1-->>Task: Task 1 done
+    Agent2-->>Task: Task 2 done
+    
+    Task-->>Main: All tasks complete
+    
+    Main-->>User: Feature implemented
+```
+
+## Error Handling Flow
+
+```mermaid
+flowchart TD
+    ERROR["Error Occurs"]
+    
+    ERROR --> TYPE{"Error Type"}
+    
+    TYPE -->|API Error| RETRY{"Retryable?"}
+    TYPE -->|Tool Error| REPORT["Report to AI"]
+    TYPE -->|Permission| TRACK["Track Denial"]
+    TYPE -->|Network| RETRY
+    TYPE -->|Rate Limit| WAIT["Wait for Reset"]
+    
+    RETRY --> MAX{"At Max Retries?"}
+    
+    MAX -->|No| BACKOFF["Exponential Backoff"]
+    BACKOFF --> RETRY_API["Retry Request"]
+    RETRY_API --> SUCCESS{"Success?"}
+    
+    SUCCESS -->|Yes| CONTINUE["Continue"]
+    SUCCESS -->|No| MAX
+    
+    MAX -->|Yes| FAIL["Fail Gracefully"]
+    
+    REPORT --> CONTINUE
+    
+    TRACK --> DENIALS{"3+ Denials?"}
+    
+    DENIALS -->|Yes| SUGGEST["Suggest Alternatives"]
+    SUGGEST --> CONTINUE
+    
+    DENIALS -->|No| CONTINUE
+    
+    WAIT --> RESET{"Rate Reset?"}
+    RESET -->|No| WAIT
+    RESET -->|Yes| CONTINUE
+    
+    CONTINUE --> END["Resume"]
+    FAIL --> END
+```
+
+## Hook System Flow
+
+```mermaid
+flowchart LR
+    subgraph HOOKS["Hook System"]
+        H_BEFORE_Q["before_query"]
+        H_AFTER_Q["after_query"]
+        H_BEFORE_T["before_tool"]
+        H_AFTER_T["after_tool"]
+        H_ERROR["on_error"]
+    end
+    
+    QUERY["Query Execution"]
+    TOOL["Tool Execution"]
+    
+    QUERY --> H_BEFORE_Q
+    
+    H_BEFORE_Q --> BLOCK{"Blocked?"}
+    BLOCK -->|Yes| HANDLE_B["Handle Block"]
+    BLOCK -->|No| QUERY
+    
+    HANDLE_B --> ABORT["Abort Query"]
+    
+    QUERY --> H_AFTER_Q
+    
+    QUERY --> H_BEFORE_T
+    H_BEFORE_T --> BLOCK_T{"Blocked?"}
+    BLOCK_T -->|Yes| HANDLE_T["Handle Block"]
+    BLOCK_T -->|No| TOOL
+    
+    TOOL --> H_AFTER_T
+    
+    QUERY --> H_ERROR
+```
+
+## Prefetch Optimization Flow
+
+```mermaid
+sequenceDiagram
+    participant Entry as main.tsx
+    participant MDM as MDM Raw
+    participant Keychain as Keychain
+    participant Imports as Module Imports
+    participant Config as Config Loading
+    
+    Note over Entry,Imports: Time 0ms - Entry point called
+    
+    Entry->>Entry: profileCheckpoint(start)
+    Entry->>MDM: startMdmRawRead()
+    Entry->>Keychain: startKeychainPrefetch()
+    
+    Note over MDM,Keychain: Running in background
+    Note over Imports: ~135ms of module loading
+    
+    Imports->>Config: Load all modules
+    
+    Config-->>Entry: Modules ready
+    MDM-->>Entry: MDM data ready
+    Keychain-->>Entry: Keychain data ready
+    
+    Entry->>Entry: All prefetch complete!
+```

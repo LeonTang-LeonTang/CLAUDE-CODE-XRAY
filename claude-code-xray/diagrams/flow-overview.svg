@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1400 400" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="startGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea"/>
+            <stop offset="100%" style="stop-color:#764ba2"/>
+        </linearGradient>
+        <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f093fb"/>
+            <stop offset="100%" style="stop-color:#f5576c"/>
+        </linearGradient>
+        <linearGradient id="processGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4facfe"/>
+            <stop offset="100%" style="stop-color:#00f2fe"/>
+        </linearGradient>
+        <linearGradient id="contextGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#43e97b"/>
+            <stop offset="100%" style="stop-color:#38f9d7"/>
+        </linearGradient>
+        <linearGradient id="queryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#fa709a"/>
+            <stop offset="100%" style="stop-color:#fee140"/>
+        </linearGradient>
+        <linearGradient id="apiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#a8edea"/>
+            <stop offset="100%" style="stop-color:#fed6e3"/>
+        </linearGradient>
+        <linearGradient id="toolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ff6b6b"/>
+            <stop offset="100%" style="stop-color:#feca57"/>
+        </linearGradient>
+        <linearGradient id="completeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#10ac84"/>
+            <stop offset="100%" style="stop-color:#1dd1a1"/>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="3" dy="3" stdDeviation="3" flood-opacity="0.3"/>
+        </filter>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#667eea"/>
+        </marker>
+    </defs>
+    
+    <!-- Title -->
+    <text x="700" y="40" text-anchor="middle" fill="#333" font-size="24" font-weight="bold">Complete Request-Response Flow</text>
+    
+    <!-- Flow Steps -->
+    <g filter="url(#shadow)">
+        <circle cx="100" cy="200" r="45" fill="url(#userGrad)"/>
+        <text x="100" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">1</text>
+        <text x="100" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">User Input</text>
+    </g>
+    
+    <path d="M150 200 L200 200" stroke="#f093fb" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="250" cy="200" r="45" fill="url(#processGrad)"/>
+        <text x="250" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">2</text>
+        <text x="250" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Process</text>
+    </g>
+    
+    <path d="M300 200 L350 200" stroke="#4facfe" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="400" cy="200" r="45" fill="url(#contextGrad)"/>
+        <text x="400" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">3</text>
+        <text x="400" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Build Context</text>
+    </g>
+    
+    <path d="M450 200 L500 200" stroke="#43e97b" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="550" cy="200" r="45" fill="url(#queryGrad)"/>
+        <text x="550" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">4</text>
+        <text x="550" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Query Engine</text>
+    </g>
+    
+    <path d="M600 200 L650 200" stroke="#fa709a" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="700" cy="200" r="45" fill="url(#apiGrad)"/>
+        <text x="700" y="195" text-anchor="middle" fill="#333" font-size="20" font-weight="bold">5</text>
+        <text x="700" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">API Call</text>
+    </g>
+    
+    <path d="M750 200 L800 200" stroke="#a8edea" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="850" cy="200" r="45" fill="url(#toolGrad)"/>
+        <text x="850" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">6</text>
+        <text x="850" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Tool Execution</text>
+    </g>
+    
+    <path d="M900 200 L950 200" stroke="#ff6b6b" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="1000" cy="200" r="45" fill="url(#queryGrad)"/>
+        <text x="1000" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">7</text>
+        <text x="1000" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Update State</text>
+    </g>
+    
+    <path d="M1050 200 L1100 200" stroke="#fa709a" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="1150" cy="200" r="45" fill="url(#completeGrad)"/>
+        <text x="1150" y="195" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">8</text>
+        <text x="1150" y="260" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Display UI</text>
+    </g>
+    
+    <path d="M1200 200 L1250 200" stroke="#10ac84" stroke-width="4" marker-end="url(#arrowhead)"/>
+    
+    <g filter="url(#shadow)">
+        <circle cx="1300" cy="200" r="40" fill="#10ac84"/>
+        <text x="1300" y="195" text-anchor="middle" fill="#fff" font-size="24">&#10003;</text>
+        <text x="1300" y="260" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Complete</text>
+    </g>
+    
+    <!-- Loop indicator -->
+    <path d="M850 260 L850 320 L400 320 L400 260" stroke="#667eea" stroke-width="3" fill="none" stroke-dasharray="8,4"/>
+    <text x="625" y="345" text-anchor="middle" fill="#667eea" font-size="14" font-weight="bold">LOOP: Continue if more tool calls</text>
+    
+    <!-- Step Details -->
+    <g transform="translate(50, 360)">
+        <rect x="0" y="0" width="200" height="30" rx="8" fill="#fce4ec"/>
+        <text x="100" y="20" text-anchor="middle" fill="#c2185b" font-size="10">1: Terminal captures input</text>
+        
+        <rect x="220" y="0" width="200" height="30" rx="8" fill="#e1f5fe"/>
+        <text x="320" y="20" text-anchor="middle" fill="#0277bd" font-size="10">2: Parse commands/mentions</text>
+        
+        <rect x="440" y="0" width="200" height="30" rx="8" fill="#e8f5e9"/>
+        <text x="540" y="20" text-anchor="middle" fill="#2e7d32" font-size="10">3: Git status, memory</text>
+        
+        <rect x="660" y="0" width="200" height="30" rx="8" fill="#fff3e0"/>
+        <text x="760" y="20" text-anchor="middle" fill="#e65100" font-size="10">4-5: API request/response</text>
+        
+        <rect x="880" y="0" width="200" height="30" rx="8" fill="#fff3e0"/>
+        <text x="980" y="20" text-anchor="middle" fill="#e65100" font-size="10">6: Execute with permissions</text>
+        
+        <rect x="1100" y="0" width="200" height="30" rx="8" fill="#f3e5f5"/>
+        <text x="1200" y="20" text-anchor="middle" fill="#7b1fa2" font-size="10">7-8: Update and display</text>
+    </g>
+</svg>
