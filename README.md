@@ -14,7 +14,7 @@
 
 <p align="center">
 
-[![Video Tutorial: Claude Code X-Ray - I Reverse Engineered Claude Code Here's How It Actually Works](./claude-code-xray/video-thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Video Tutorial: Claude Code Xray - I Reverse Engineered Claude Code Here's How It Actually Works](https://raw.githubusercontent.com/LeonTang-LeonTang/CLAUDE-CODE-XRAY/main/claude-code-xray/video-thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
 **[▶ Watch on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)**
 
